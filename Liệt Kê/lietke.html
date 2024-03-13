@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bài Toán Liệt Kê</title>
+</head>
+<body>
+    <h1>Bài Toán Liệt Kê</h1>
+    <p>Liệt kê tất cả các cách chọn 3 người từ một nhóm gồm 5 người:</p>
+    <button id="calculateBtn" onclick="handleClick()">Hiển Thị Kết Quả</button>
+    <ul id="combinations"></ul>
+
+    <script>
+        function getCombinations(arr, k, start, current, result) {
+            if (k === 0) {
+                result.push([...current]);
+                return;
+            }
+
+            for (let i = start; i < arr.length; i++) {
+                current.push(arr[i]);
+                getCombinations(arr, k - 1, i + 1, current, result);
+                current.pop();
+            }
+        }
+
+        function generateCombinations(arr, k) {
+            const result = [];
+            getCombinations(arr, k, 0, [], result);
+            return result;
+        }
+
+        function handleClick() {
+            const people = [1, 2, 3, 4, 5];
+            const k = 3;
+            const combinations = generateCombinations(people, k);
+
+            const combinationsList = document.getElementById('combinations');
+            combinationsList.innerHTML = '';
+
+            combinations.forEach(combination => {
+                const listItem = document.createElement('li');
+                listItem.textContent = combination.join(', ');
+                combinationsList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>

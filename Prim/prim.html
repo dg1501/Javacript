@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cây khung tối thiểu - Thuật toán Prim</title>
+</head>
+<body>
+    <h1>Cây khung tối thiểu - Thuật toán Prim</h1>
+    <p>Tìm cây khung nhỏ nhất bằng thuật toán Prim:</p>
+    <button id="calculateBtn" onclick="handleClick()">Tìm cây bao trùm tối thiểu</button>
+    <p id="result"></p>
+
+    <script>
+        function findMinimumSpanningTree() {
+            // Define the graph as an adjacency matrix
+            const graph = [
+                [0, 2, 0, 6, 0],
+                [2, 0, 3, 8, 5],
+                [0, 3, 0, 0, 7],
+                [6, 8, 0, 0, 9],
+                [0, 5, 7, 9, 0]
+            ];
+
+            const numVertices = graph.length;
+            const parent = [];
+            const key = [];
+            const mstSet = [];
+
+            for (let i = 0; i < numVertices; i++) {
+                key[i] = Infinity;
+                mstSet[i] = false;
+            }
+
+            key[0] = 0;
+            parent[0] = -1;
+
+            for (let count = 0; count < numVertices - 1; count++) {
+                const u = minKey(key, mstSet);
+                mstSet[u] = true;
+
+                for (let v = 0; v < numVertices; v++) {
+                    if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v]) {
+                        parent[v] = u;
+                        key[v] = graph[u][v];
+                    }
+                }
+            }
+
+            return parent;
+        }
+
+        function minKey(key, mstSet) {
+            let min = Infinity;
+            let minIndex = -1;
+
+            for (let v = 0; v < key.length; v++) {
+                if (!mstSet[v] && key[v] < min) {
+                    min = key[v];
+                    minIndex = v;
+                }
+            }
+
+            return minIndex;
+        }
+
+        function handleClick() {
+            const parent = findMinimumSpanningTree();
+            document.getElementById('result').innerText = `Parent array: [${parent.join(', ')}]`;
+        }
+    </script>
+</body>
+</html>
