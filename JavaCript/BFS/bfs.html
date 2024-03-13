@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thuật Toán BFS</title>
+</head>
+<body>
+  <h1>Ví Dụ Về BFS</h1>
+  <label for="startVertex">Đỉnh Xuất Phát:</label>
+  <input type="text" id="startVertex" placeholder="Nhập đỉnh xuất phát">
+  <button onclick="runBFS()">Bắt Đầu</button>
+  <div id="result"></div>
+
+  <script>
+    class Graph {
+      constructor() {
+        this.vertices = [];
+        this.edges = {};
+      }
+
+      addVertex(vertex) {
+        this.vertices.push(vertex);
+        this.edges[vertex] = [];
+      }
+
+      addEdge(vertex1, vertex2) {
+        this.edges[vertex1].push(vertex2);
+        this.edges[vertex2].push(vertex1);
+      }
+
+      bfs(startingVertex) {
+        const visited = {};
+        const queue = [];
+        const result = [];
+
+        // Khởi tạo đỉnh gốc và đánh dấu là đã thăm
+        visited[startingVertex] = true;
+        queue.push(startingVertex);
+
+        while (queue.length !== 0) {
+          const currentVertex = queue.shift();
+          result.push(currentVertex);
+
+          // Duyệt qua tất cả các đỉnh láng giềng chưa thăm
+          for (const neighbor of this.edges[currentVertex]) {
+            if (!visited[neighbor]) {
+              visited[neighbor] = true;
+              queue.push(neighbor);
+            }
+          }
+        }
+
+        return result;
+      }
+    }
+
+    // Sử dụng đồ thị và thực hiện BFS khi nút được nhấn
+    const graph = new Graph();
+
+    graph.addVertex("A");
+    graph.addVertex("B");
+    graph.addVertex("C");
+    graph.addVertex("D");
+    graph.addVertex("E");
+
+    graph.addEdge("A", "B");
+    graph.addEdge("A", "C");
+    graph.addEdge("B", "D");
+    graph.addEdge("C", "E");
+
+    function runBFS() {
+      const startVertex = document.getElementById("startVertex").value;
+      const bfsResult = graph.bfs(startVertex);
+      const resultElement = document.getElementById("result");
+      resultElement.innerHTML = "Duyệt theo chiều rộng (BFS): " + bfsResult.join('->');
+    }
+  </script>
+</body>
+</html>

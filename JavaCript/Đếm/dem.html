@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bài Toán Đếm</title>
+</head>
+<body>
+    <h1>Bài Toán Đếm</h1>
+    <p>Có bao nhiêu số tự nhiên có đúng 3 chữ số khác nhau và chia hết cho 5:</p>
+    <button id="calculateBtn" onclick="handleClick()">Bắt Đầu</button>
+    <p id="result"></p>
+
+    <script>
+        function countNumbers() {
+            let count = 0;
+            for (let i = 100; i < 1000; i++) {
+                const digits = String(i).split('');
+                if (new Set(digits).size === 3 && i % 5 === 0) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        function handleClick() {
+            const result = countNumbers();
+            document.getElementById('result').innerText = `Kết Quả: ${result}`;
+        }
+    </script>
+</body>
+</html>

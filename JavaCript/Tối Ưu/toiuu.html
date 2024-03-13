@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bài Toán Tối Ưu</title>
+</head>
+<body>
+    <h1>Bài Toán Tối Ưu</h1>
+    <label for="weights">Nhập trọng lượng các mặt hàng (cách nhau bằng dấu phẩy):</label>
+    <input type="text" id="weights">
+    <label for="binCapacity">Nhập dung tích thùng:</label>
+    <input type="number" id="binCapacity">
+    <button id="StartBtn" onclick="handleClick()">Start</button>
+    <p id="result"></p>
+
+    <script>
+        function binPacking(weights, binCapacity) {
+            // Chia các đồ vật vào các thùng
+            let bins = 1;
+            let currentBinWeight = 0;
+
+            for (let i = 0; i < weights.length; i++) {
+                if (currentBinWeight + weights[i] <= binCapacity) {
+                    currentBinWeight += weights[i];
+                } else {
+                    bins++;
+                    currentBinWeight = weights[i];
+                }
+            }
+
+            return bins;
+        }
+
+        function handleClick() {
+            const weightsInput = document.getElementById('weights').value;
+            const binCapacityInput = document.getElementById('binCapacity').value;
+
+            const weights = weightsInput.split(',').map(weight => parseInt(weight));
+            const binCapacity = parseInt(binCapacityInput);
+
+            const numBins = binPacking(weights, binCapacity);
+
+            document.getElementById('result').innerText = `SỐ THÙNG CẦN THIẾT: ${numBins}`;
+        }
+    </script>
+</body>
+</html>
