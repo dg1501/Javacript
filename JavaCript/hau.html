@@ -1,0 +1,97 @@
+Á<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Xếp 10 hậu</title>
+    <style>
+        td{
+            width:50px;
+            height:50px;
+            text-align:center;
+        }
+        img{
+            height:50px;
+        }
+        
+    </style>
+    <script>
+        var x = [], dem;
+        const n = 10;
+        function show_kq() {
+            var kq = document.getElementById('ketqua')
+            var s = '';
+            for (var i = 0; i < n; i++) {
+                s += (x[i] + 1) + ', ';
+            }
+            kq.innerHTML += 'Cách xếp hậu thứ ' + (++dem) + ' là: ' + s + '<br>'
+            if (dem == 1) {
+                //show kq ra bàn cờ
+                var s = '<table border=1>';
+                for (var d = 0; d < n; d++) {
+                    s += '<tr>';
+                    for (var c = 0; c < n; c++) {
+                        if (x[d] == c)
+                            s += '<td><img src="conhau.png" alt="H"></td>';
+                        else
+                            s += '<td></td>';
+                    }
+                    s += '</tr>';
+                }
+                s += '</table>'
+                document.getElementById('ban-co').innerHTML = s;
+            }
+        }
+
+        function check_ko_an_nhau(i) {
+            //đã xếp được các hậu i vào hàng i, tại cột x[i]
+            //các hậu khác từ 0->i-1 cũng thế: cũng ko ăn nhau
+            //cần check hậu i có ăn các hậu 0->i-1 ko?
+            for (var j = 0; j < i; j++) {
+                if (x[i] == x[j]) //trùng cột => ăn nhau
+                    return false; //cách này ko đc
+                if (i + x[i] == j + x[j])
+                    return false; //đường chéo SẮC ăn nhau
+                if (i - x[i] == j - x[j])
+                    return false; //đường chéo HUYỀN ăn nhau
+            }
+
+            return true //được
+        }
+
+        //x[i] là cột của hậu i
+        function xep_hau(i) {
+            for (var cot = 0; cot < n; cot++) {
+                x[i] = cot
+                if (check_ko_an_nhau(i)) { //nhánh cận
+                    if (i == n - 1) {
+                        //đã đến thằng cuối cùng
+                        show_kq() //suy biến: ko đệ quy
+                    } else {
+                        xep_hau(i + 1) //đệ quy
+                    }
+                }
+            }
+        }
+        function giai_toan() {
+            //x là vecto chứa nghiệm
+            //mỗi hậu ở 1 dòng
+            //x[i] là cột của hậu i : cột từ 0..n-1
+            for (var i = 0; i < n; i++) {
+                x[i] = 0 // chưa ở cột nào cả
+            }
+            dem = 0
+            xep_hau(0) //tô 1 màu cho quốc gia đầu tiên
+        }
+    </script>
+</head>
+<body>
+    <h3>Bài toán Xếp 10 hậu</h3>
+    <div>
+        Có 10 quân Hậu (cờ vua), cần xếp vào bàn cờ 10x10
+sao cho chúng ko ăn nhau (theo luật cờ vua)
+    </div>
+    <button onclick="giai_toan()">Tìm cách xếp</button>
+    <div id="ban-co"></div>
+    <div id="ketqua"></div>
+</body>
+</html>
